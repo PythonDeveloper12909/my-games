@@ -10,6 +10,14 @@ class Player(pygame.sprite.Sprite):
         self.bullet.fill((255, 255, 255))  
         self.bullet_rect=self.bullet.get_rect(midbottom=(400,555))
         self.bullet_rect.midbottom=self.rect.midtop
+        self.width1=100
+        self.width2=100
+        self.health_indicator1=pygame.Surface((self.width1,15))
+        self.health_indicator1.fill((0, 255, 0))
+        self.health_indicator1_rect=self.health_indicator1.get_rect(topleft=(10, 10))
+        self.health_indicator2=pygame.Surface((self.width2,15))
+        self.health_indicator2.fill((255,0,0))
+        self.health_indicator2_rect=self.health_indicator2.get_rect(topleft=(10, 10))
     def move(self):
         keys=pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
@@ -26,14 +34,21 @@ class Player(pygame.sprite.Sprite):
         self.bullet_rect.y-=7
         if self.bullet_rect.y < 0:
             self.bullet_rect.midbottom=self.rect.midtop   
+    def blit_health_indicator(self, surface):
+        surface.blit(self.health_indicator2, self.health_indicator2_rect)
+        surface.blit(self.health_indicator1, self.health_indicator1_rect)
+    def health_indicator(self):
+        self.health_indicator2_rect.midtop=self.rect.midbottom
+        self.health_indicator1_rect.midtop=self.rect.midbottom
     def update(self):
         self.move()
         self.blit(screen)
         self.shoot()   
-class Enemy(Player,pygame.sprite.Sprite):
+        self.blit_health_indicator(screen)
+        self.health_indicator()
+class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        pygame.sprite.Sprite.__init__(self)
         self.image=pygame.image.load("C:\\Users\\Ansh\\Desktop\\images_game\\space invader blue enemy.xcf")
         self.rect=self.image.get_rect(midbottom=(450,-5))
         self.image2=pygame.image.load("C:\\Users\\Ansh\\Desktop\\images_game\\space invader enemy yellow.xcf")
@@ -54,14 +69,29 @@ class Enemy(Player,pygame.sprite.Sprite):
             self.kill()
         if self.rect3.x > 725 or self.rect3.x < 50:
             self.kill()   
-    def shoot_enemy(self):
-        if self.bullet_rect.colliderect(self.rect2):
-            self.bullet_rect.midbottom = self.rect.midtop
+    def shoot_enemy(self, player):
+        if player.bullet_rect.colliderect(self.rect): 
+            player.bullet_rect.midbottom = player.rect.midtop
+            self.rect.y=800          
+        elif player.bullet_rect.colliderect(self.rect2):
+            player.bullet_rect.midbottom = player.rect.midtop
+            self.rect2.y=800
+        elif player.bullet_rect.colliderect(self.rect3):
+            player.bullet_rect.midbottom = player.rect.midtop
+            self.rect3.y=800 
+    def health_indicator_low(self,player):
+        if player.rect.colliderect(self.rect):
+            player.width1=80      
+        if player.rect.colliderect(self.rect2):
+            player.width1=80
+        if player.rect.colliderect(self.rect3):
+            player.width1=80
     def update(self):
         self.move()
         self.blit(screen)
         self.kill1()
-        self.shoot_enemy()
+        self.shoot_enemy(player_group.sprite)
+        self.health_indicator_low(player_group.sprite)
 def spawn_enemy():
          enemy=Enemy()
          enemy_group.add(enemy)
@@ -90,6 +120,14 @@ enemy_yellow=pygame.image.load("C:\\Users\\Ansh\\Desktop\\images_game\\space inv
 bullet=pygame.Surface((10, 20))
 bullet.fill((255, 0, 0))
 bullet_rect=bullet.get_rect(midbottom=(400,555))
+width1=100
+width2=100
+health_indicator1=pygame.Surface((width1,15))
+health_indicator1.fill((0, 255, 0))
+health_indicator1_rect=health_indicator1.get_rect(topleft=(10, 10))
+health_indicator2=pygame.Surface((width2,15))
+health_indicator2.fill((255,0,0))
+health_indicator2_rect=health_indicator2.get_rect(topleft=(40, 10))
 clock=pygame.time.Clock()
 Userevent = pygame.USEREVENT + 1
 pygame.time.set_timer(Userevent, 2500)  
