@@ -17,7 +17,7 @@ cell_size=20
 cell_no=30
 screen=pygame.display.set_mode((cell_size*cell_no,cell_size*cell_no))
 pygame.display.set_caption("Snake Game")
-background=pygame.image.load("C:\\Users\\Ansh\\Desktop\\images_game\\snake game background.jpg")
+background=pygame.image.load("C:\\Users\\dell\Desktop\\images_game\\snake game background.jpg")
 snake_colour=(0,255,0)
 snake_surf=pygame.Surface((cell_size,cell_size))
 snake_colour_fill=snake_surf.fill(snake_colour)
