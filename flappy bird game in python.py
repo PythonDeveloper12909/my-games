@@ -4,8 +4,6 @@ import random
 class FlappyBird(pygame.sprite.Sprite):
      def __init__(self):
             super().__init__()
-            # self.image=pygame.image.load("C:\\Users\\Ansh\\Desktop\\images_game\\flappy bird new.xcf").convert_alpha()
-            # self.rect=self.image.get_rect(center=(400,300))
             self.gravity=0
             self.animation_frame1=pygame.image.load("C:\\Users\\dell\\Desktop\\images_game\\flappy bird animation frame1.xcf").convert_alpha()
             self.animation_frame2=pygame.image.load("C:\\Users\\dell\\Desktop\\images_game\\flappy bird animation frame2.xcf").convert_alpha()
