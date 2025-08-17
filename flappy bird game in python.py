@@ -1,3 +1,4 @@
+# ...existing code...
 import pygame 
 from sys import exit
 import random
@@ -5,9 +6,9 @@ class FlappyBird(pygame.sprite.Sprite):
      def __init__(self):
             super().__init__()
             self.gravity=0
-            self.animation_frame1=pygame.image.load("C:\\Users\\dell\\Desktop\\images_game\\flappy bird animation frame1.xcf").convert_alpha()
-            self.animation_frame2=pygame.image.load("C:\\Users\\dell\\Desktop\\images_game\\flappy bird animation frame2.xcf").convert_alpha()
-            self.animation_frame3=pygame.image.load("C:\\Users\\dell\\Desktop\\images_game\\flappy bird animation frame3.xcf").convert_alpha()
+            self.animation_frame1=pygame.image.load("images_game/flappy bird animation frame1.xcf").convert_alpha()
+            self.animation_frame2=pygame.image.load("images_game/flappy bird animation frame2.xcf").convert_alpha()
+            self.animation_frame3=pygame.image.load("images_game/flappy bird animation frame3.xcf").convert_alpha()
             self.bird_fly=[self.animation_frame1, self.animation_frame2, self.animation_frame3]
             self.bird_fly_index=0 
             self.image=self.bird_fly[self.bird_fly_index]
@@ -35,8 +36,8 @@ class FlappyBird(pygame.sprite.Sprite):
 class Pipe(pygame.sprite.Sprite):
      def __init__(self):
             super().__init__()
-            self.image=pygame.image.load("C:\\Users\\dell\\Desktop\\images_game\\flappy bird pipe new.xcf").convert_alpha()
-            self.image2=pygame.image.load("C:\\Users\\dell\\Desktop\\images_game\\flappy bird pipe2 new.xcf").convert_alpha()
+            self.image=pygame.image.load("images_game/flappy bird pipe new.xcf").convert_alpha()
+            self.image2=pygame.image.load("images_game/flappy bird pipe2 new.xcf").convert_alpha()
             self.rect=self.image.get_rect(midtop=(900,400))
             self.rect2=self.image2.get_rect(midbottom=(900,200))
             self.obstacle_list=[self.rect, self.rect2]  
@@ -83,11 +84,11 @@ pygame.init()
 WIDTH,HEIGHT=800,600
 screen=pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("Flappy Bird")
-background=pygame.image.load("C:\\Users\\dell\\Desktop\\images_game\\flappy bird background.png").convert_alpha()
-flappy_bird=pygame.image.load("C:\\Users\\dell\\Desktop\\images_game\\flappy bird new.xcf").convert_alpha()
+background=pygame.image.load("images_game/flappy bird background.png").convert_alpha()
+flappy_bird=pygame.image.load("images_game/flappy bird new.xcf").convert_alpha()
 flappy_bird_rect=flappy_bird.get_rect(center=(400,300))
-pipe1=pygame.image.load("C:\\Users\\dell\\Desktop\\images_game\\flappy bird pipe new.xcf").convert_alpha()
-pipe_inverted=pygame.image.load("C:\\Users\\dell\\Desktop\\images_game\\flappy bird pipe2 new.xcf").convert_alpha()
+pipe1=pygame.image.load("images_game/flappy bird pipe new.xcf").convert_alpha()
+pipe_inverted=pygame.image.load("images_game/flappy bird pipe2 new.xcf").convert_alpha()
 pipe_inverted_rect=pipe_inverted.get_rect(midbottom=(900,200))
 pipe_rect=pipe1.get_rect(midtop=(900,350))
 background_rect=background.get_rect(center=(400,300))
@@ -108,9 +109,9 @@ score_display=f'{score1}'
 score_font=pygame.font.SysFont("Arial", 50)
 score_text=score_font.render(score_display, True, (255, 255, 255))
 score_text_rect=score_text.get_rect(center=(400, 50))
-bird_animation1=pygame.image.load("C:\\Users\\dell\\Desktop\\images_game\\flappy bird animation frame1.xcf").convert_alpha()
-bird_animation2=pygame.image.load("C:\\Users\\dell\\Desktop\\images_game\\flappy bird animation frame2.xcf").convert_alpha()
-bird_animation3=pygame.image.load("C:\\Users\\dell\\Desktop\\images_game\\flappy bird animation frame3.xcf").convert_alpha()
+bird_animation1=pygame.image.load("images_game/flappy bird animation frame1.xcf").convert_alpha()
+bird_animation2=pygame.image.load("images_game/flappy bird animation frame2.xcf").convert_alpha()
+bird_animation3=pygame.image.load("images_game/flappy bird animation frame3.xcf").convert_alpha()
 bird_fly=[bird_animation1, bird_animation2, bird_animation3]
 bird_fly_index=0
 bird_surf=bird_fly[bird_fly_index]

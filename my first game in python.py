@@ -5,19 +5,19 @@ from random import randint,choice
 class Player(pygame.sprite.Sprite):
        def __init__(self):
               super().__init__()
-              self.image2=pygame.image.load('C:\\Users\\dell\\Desktop\\images_game\\characterop2.xcf').convert_alpha()
+              self.image2=pygame.image.load('images_game/characterop2.xcf').convert_alpha()
               self.gravity=0
-              self.character2=pygame.image.load('C:\\Users\\dell\\Desktop\\images_game\\characterop.xcf').convert_alpha()
-              self.character1=pygame.image.load('C:\\Users\\dell\\Desktop\\images_game\\characterop2.xcf').convert_alpha()
-              self.character3=pygame.image.load('C:\\Users\\dell\\Desktop\\images_game\\characterop3.xcf').convert_alpha()
-              self.character4=pygame.image.load('C:\\Users\\dell\\Desktop\\images_game\\characterop4.xcf').convert_alpha()
-              self.character=pygame.image.load('C:\\Users\\dell\\Desktop\\images_game\\characterop2.xcf').convert_alpha()
+              self.character2=pygame.image.load('images_game/characterop.xcf').convert_alpha()
+              self.character1=pygame.image.load('images_game/characterop2.xcf').convert_alpha()
+              self.character3=pygame.image.load('images_game/characterop3.xcf').convert_alpha()
+              self.character4=pygame.image.load('images_game/characterop4.xcf').convert_alpha()
+              self.character=pygame.image.load('images_game/characterop2.xcf').convert_alpha()
               self.character_walk=[character1,character2,character3,character4]
               self.character_index=0
               self.character_surf=character_walk[character_index]
               self.image=self.character_walk[self.character_index]  
               self.rect=self.image.get_rect(midbottom=(100,470))
-              self.sound=pygame.mixer.Sound('C:\\Users\\dell\\Desktop\\images_game\\jump sound.wav')
+              self.sound=pygame.mixer.Sound('images_game/jump sound.wav')
               self.sound.set_volume(1.0)
        def player_controll(self):
               keys=pygame.key.get_pressed()
@@ -47,15 +47,15 @@ class Obstacles(pygame.sprite.Sprite):
         def __init__(self,type):
                 super().__init__() 
                 if type=='fly':
-                        bird1=pygame.image.load('C:\\Users\\dell\\Desktop\\images_game\\birdop3.xcf').convert_alpha()
-                        bird4=pygame.image.load('C:\\Users\\dell\\Desktop\\images_game\\birdop1.xcf').convert_alpha()
-                        bird2=pygame.image.load('C:\\Users\\dell\\Desktop\\images_game\\birdop2.xcf').convert_alpha()
-                        bird3=pygame.image.load('C:\\Users\\dell\\Desktop\\images_game\\birdop4.xcf').convert_alpha()
+                        bird1=pygame.image.load('images_game/birdop3.xcf').convert_alpha()
+                        bird4=pygame.image.load('images_game/birdop1.xcf').convert_alpha()
+                        bird2=pygame.image.load('images_game/birdop2.xcf').convert_alpha()
+                        bird3=pygame.image.load('images_game/birdop4.xcf').convert_alpha()
                         self.frames=[bird1,bird2,bird3,bird4]
                         self.y_pos=350
                 else:
-                        snail2=pygame.image.load('C:\\Users\\dell\\Desktop\\images_game\\snail.xcf').convert_alpha()
-                        snail=pygame.image.load('C:\\Users\\dell\\Desktop\\images_game\\snail2.xcf').convert_alpha()
+                        snail2=pygame.image.load('images_game/snail.xcf').convert_alpha()
+                        snail=pygame.image.load('images_game/snail2.xcf').convert_alpha()
                         self.frames=[snail,snail2]
                         self.y_pos=470
                 self.animation_index=0
@@ -76,9 +76,7 @@ class Obstacles(pygame.sprite.Sprite):
                         
                         
               
-       
-
-
+        
 pygame.init()
 pygame.display.set_caption('Runner') 
 def display():
@@ -126,18 +124,18 @@ def collisions_sprite():
 
 score4=int(pygame.time.get_ticks()/1000)
 screen = pygame.display.set_mode((800, 600))  
-surface = pygame.image.load('C:\\Users\\dell\\Desktop\\images_game\\background2.png')
+surface = pygame.image.load('images_game/background2.png')
 font=pygame.font.SysFont('Arial',55)
-snail2=pygame.image.load('C:\\Users\\dell\\Desktop\\images_game\\snail.xcf').convert_alpha()
-snail=pygame.image.load('C:\\Users\\dell\\Desktop\\images_game\\snail2.xcf').convert_alpha()
+snail2=pygame.image.load('images_game/snail.xcf').convert_alpha()
+snail=pygame.image.load('images_game/snail2.xcf').convert_alpha()
 snail_walk=[snail,snail2]
 snail_index=0
 snail_surf=snail_walk[snail_index]
-character2=pygame.image.load('C:\\Users\\dell\\Desktop\\images_game\\characterop.xcf').convert_alpha()
-character1=pygame.image.load('C:\\Users\\dell\\Desktop\\images_game\\characterop2.xcf').convert_alpha()
-character3=pygame.image.load('C:\\Users\\dell\\Desktop\\images_game\\characterop3.xcf').convert_alpha()
-character4=pygame.image.load('C:\\Users\\dell\\Desktop\\images_game\\characterop4.xcf').convert_alpha()
-character=pygame.image.load('C:\\Users\\dell\\Desktop\\images_game\\characterop2.xcf').convert_alpha()
+character2=pygame.image.load('images_game/characterop.xcf').convert_alpha()
+character1=pygame.image.load('images_game/characterop2.xcf').convert_alpha()
+character3=pygame.image.load('images_game/characterop3.xcf').convert_alpha()
+character4=pygame.image.load('images_game/characterop4.xcf').convert_alpha()
+character=pygame.image.load('images_game/characterop2.xcf').convert_alpha()
 character_walk=[character1,character2,character3,character4]
 character_index=0
 character_surf=character_walk[character_index]
@@ -147,10 +145,10 @@ character_rect_scaled=character_scaled.get_rect(center=(400,300))
 character_rect=character.get_rect(midbottom=(100,470))
 snail_rect2=snail.get_rect(midbottom=(800,480))
 snail_rect2.left=800
-bird1=pygame.image.load('C:\\Users\\dell\\Desktop\\images_game\\birdop1.xcf').convert_alpha()
-bird2=pygame.image.load('C:\\Users\\dell\\Desktop\\images_game\\birdop2.xcf').convert_alpha()
-bird3=pygame.image.load('C:\\Users\\dell\\Desktop\\images_game\\birdop3.xcf').convert_alpha()
-bird4=pygame.image.load('C:\\Users\\dell\\Desktop\\images_game\\birdop4.xcf').convert_alpha()
+bird1=pygame.image.load('images_game/birdop1.xcf').convert_alpha()
+bird2=pygame.image.load('images_game/birdop2.xcf').convert_alpha()
+bird3=pygame.image.load('images_game/birdop3.xcf').convert_alpha()
+bird4=pygame.image.load('images_game/birdop4.xcf').convert_alpha()
 bird_walk=[bird1,bird2,bird3,bird4]
 bird_index=0
 bird_surf=bird_walk[bird_index]
@@ -170,7 +168,7 @@ pygame.time.set_timer(event_bird_animation,200)
 player=pygame.sprite.GroupSingle()
 player.add((Player()))
 obstacle=pygame.sprite.Group()
-backgroundsound=pygame.mixer.Sound('C:\\Users\\dell\\Desktop\\images_game\\background sound.wav')
+backgroundsound=pygame.mixer.Sound('images_game/background sound.wav')
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
