@@ -6,9 +6,9 @@ class FlappyBird(pygame.sprite.Sprite):
      def __init__(self):
             super().__init__()
             self.gravity=0
-            self.animation_frame1=pygame.image.load("my-games\\images_game\\flappy bird animation frame1.xcf").convert_alpha()
-            self.animation_frame2=pygame.image.load("my-games\\images_game\\flappy bird animation frame2.xcf").convert_alpha()
-            self.animation_frame3=pygame.image.load("my-games\\images_game\\flappy bird animation frame3.xcf").convert_alpha()
+            self.animation_frame1=pygame.image.load("images_game\\flappy bird animation frame1.xcf").convert_alpha()
+            self.animation_frame2=pygame.image.load("images_game\\flappy bird animation frame2.xcf").convert_alpha()
+            self.animation_frame3=pygame.image.load("images_game\\flappy bird animation frame3.xcf").convert_alpha()
             self.bird_fly=[self.animation_frame1, self.animation_frame2, self.animation_frame3]
             self.bird_fly_index=0 
             self.image=self.bird_fly[self.bird_fly_index]
@@ -20,9 +20,9 @@ class FlappyBird(pygame.sprite.Sprite):
      def jump(self):
       self.gravity=-4        
      def collision(self):
+           global game_reset
            if self.rect.y>=570 or self.rect.y<=0:
-                pygame.quit()
-                exit()
+                  game_reset=False
      def animation(self):
            self.bird_fly_index+=0.1
            if self.bird_fly_index>=len(self.bird_fly):
@@ -36,8 +36,8 @@ class FlappyBird(pygame.sprite.Sprite):
 class Pipe(pygame.sprite.Sprite):
      def __init__(self):
             super().__init__()
-            self.image=pygame.image.load("my-games\\images_game\\flappy bird pipe new.xcf").convert_alpha()
-            self.image2=pygame.image.load("my-games\\images_game\\flappy bird pipe2 new.xcf").convert_alpha()
+            self.image=pygame.image.load("images_game\\flappy bird pipe new.xcf").convert_alpha()
+            self.image2=pygame.image.load("images_game\\flappy bird pipe2 new.xcf").convert_alpha()
             self.rect=self.image.get_rect(midtop=(900,400))
             self.rect2=self.image2.get_rect(midbottom=(900,200))
             self.obstacle_list=[self.rect, self.rect2]  
@@ -51,9 +51,9 @@ class Pipe(pygame.sprite.Sprite):
            if self.rect.x < 0 and self.rect2.x < -100:
                 self.kill()
      def collision(self):
-                 if self.rect.colliderect(bird.rect) or self.rect2.colliderect(bird.rect):
-                     pygame.quit()
-                     exit()
+            global game_reset
+            if self.rect.colliderect(bird.rect) or self.rect2.colliderect(bird.rect):
+                     game_reset=False
      def update(self):
               self.move()
               self.draw()
@@ -79,16 +79,16 @@ def remove_score():
       if bird.rect.x>=pipe.rect.x:
             if bird.rect.x==pipe.rect.x+1:
                         score1-=1
-      
+
 pygame.init()
 WIDTH,HEIGHT=800,600
 screen=pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("Flappy Bird")
-background=pygame.image.load("my-games\\images_game\\flappy bird background.png").convert_alpha()
-flappy_bird=pygame.image.load("my-games\\images_game\\flappy bird new.xcf").convert_alpha()
+background=pygame.image.load("images_game\\flappy bird background.png").convert_alpha()
+flappy_bird=pygame.image.load("images_game\\flappy bird new.xcf").convert_alpha()
 flappy_bird_rect=flappy_bird.get_rect(center=(400,300))
-pipe1=pygame.image.load("my-games\\images_game\\flappy bird pipe new.xcf").convert_alpha()
-pipe_inverted=pygame.image.load("my-games\\images_game\\flappy bird pipe2 new.xcf").convert_alpha()
+pipe1=pygame.image.load("images_game\\flappy bird pipe new.xcf").convert_alpha()
+pipe_inverted=pygame.image.load("images_game\\flappy bird pipe2 new.xcf").convert_alpha()
 pipe_inverted_rect=pipe_inverted.get_rect(midbottom=(900,200))
 pipe_rect=pipe1.get_rect(midtop=(900,350))
 background_rect=background.get_rect(center=(400,300))
@@ -109,37 +109,60 @@ score_display=f'{score1}'
 score_font=pygame.font.SysFont("Arial", 50)
 score_text=score_font.render(score_display, True, (255, 255, 255))
 score_text_rect=score_text.get_rect(center=(400, 50))
-bird_animation1=pygame.image.load("my-games\\images_game\\flappy bird animation frame1.xcf").convert_alpha()
-bird_animation2=pygame.image.load("my-games\\images_game\\flappy bird animation frame2.xcf").convert_alpha()
-bird_animation3=pygame.image.load("my-games\\images_game\\flappy bird animation frame3.xcf").convert_alpha()
+bird_animation1=pygame.image.load("images_game\\flappy bird animation frame1.xcf").convert_alpha()
+bird_animation2=pygame.image.load("images_game\\flappy bird animation frame2.xcf").convert_alpha()
+bird_animation3=pygame.image.load("images_game\\flappy bird animation frame3.xcf").convert_alpha()
 bird_fly=[bird_animation1, bird_animation2, bird_animation3]
 bird_fly_index=0
 bird_surf=bird_fly[bird_fly_index]
 bird_fly_animation=pygame.USEREVENT+2
 pygame.time.set_timer(bird_fly_animation, 200)
-while True:
+running=True
+game_reset=True
+while running:
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
                 pygame.quit()
                 exit()
             if event.type==pygame.KEYDOWN:
                 if event.key==pygame.K_SPACE:
-                    bird.jump()  
+                    bird.jump() 
             if event.type==userevent:
                   infinte_pipespawn()
             if event.type==bird_fly_animation:
                   bird.animation()
-        
-        screen.blit(background, background_rect)
-        # screen.blit(flappy_bird, flappy_bird_rect)
-        # screen.blit(pipe, pipe_rect)
-        # screen.blit(pipe_inverted, pipe_inverted_rect)
-        bird_group.draw(screen)
-        bird_group.update()
-        pipe_group.draw(screen)
-        pipe_group.update() 
-        screen.blit(score_text, score_text_rect)  
-        remove_score()
-        score()
+            if event.type==pygame.KEYDOWN:
+                  if event.key==pygame.K_SPACE and game_reset==False:
+                        game_reset=True
+
+        if game_reset:
+            screen.blit(background, background_rect)
+            bird_group.draw(screen)
+            bird_group.update()
+            pipe_group.draw(screen)
+            pipe_group.update() 
+            screen.blit(score_text, score_text_rect)  
+            remove_score()
+            score()
+        else:
+            screen.fill((230,230,230))
+            game_over=pygame.font.SysFont('Arial',55)
+            game_over_text=game_over.render('Press "Space" to restart',False,(11,64,234))
+            screen.blit(game_over_text,(180,250))
+            score1 = 0
+            score_display = f'{score1}'
+            score_text = score_font.render(score_display, True, (255, 255, 255))
+            score_text_rect = score_text.get_rect(center=(400, 50))
+
+            # Reset bird
+            bird_group.empty()
+            bird = FlappyBird()
+            bird_group.add(bird)
+
+            # Reset pipes
+            pipe_group.empty()
+
         pygame.display.update()
         clock.tick(60)
+
+

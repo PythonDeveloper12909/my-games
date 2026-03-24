@@ -17,7 +17,7 @@ def ball_groundorfloor_touch():
     elif ball_rect.y>=575:
         ball_rect.y=575
 def ball_surface_touch():
-    global ball_direction_x,ball_direction_y
+    global ball_direction_x,ball_direction_y,speed,ball_speed
     if ball_direction_x==1 and ball_rect.y==575:
         ball_direction_y=-1
         ball_direction_x=1
@@ -31,29 +31,41 @@ def ball_surface_touch():
         ball_direction_y=1
         ball_direction_x=-1
     elif ball_rect.colliderect(surface1_rect) and ball_direction_y==1:
-        ball_direction_y=1
+        ball_direction_y=random.choice([1,-1])
         ball_direction_x=1
+        speed+=0.1
+        ball_speed+=0.1
     elif ball_rect.colliderect(surface1_rect) and ball_direction_y==-1:
-        ball_direction_y=-1
+        ball_direction_y=random.choice([-1,1])
         ball_direction_x=1
+        speed+=0.1
+        ball_speed+=0.1
     elif ball_rect.colliderect(surface2_rect) and ball_direction_y==-1:
-        ball_direction_y=-1
+        ball_direction_y=random.choice([-1,1])
         ball_direction_x=-1
+        speed+=0.1
+        ball_speed+=0.1
     elif ball_rect.colliderect(surface2_rect) and ball_direction_y==1:
-        ball_direction_y=1
+        ball_direction_y=random.choice([-1,1])
         ball_direction_x=-1
+        speed+=0.1
+        ball_speed+=0.1
 def ball_reset():
-    global ball_direction_x,ball_direction_y
+    global ball_direction_x,ball_direction_y,speed,ball_speed
     if ball_rect.x>=800:
         ball_rect.x=300
         ball_rect.y=200
         ball_direction_x=random.choice([-1,1])
         ball_direction_y=random.choice([-1,1])
+        speed=3.5
+        ball_speed=4
     elif ball_rect.x<=0:
         ball_rect.x=300
         ball_rect.y=200
         ball_direction_x=random.choice([-1,1])
         ball_direction_y=random.choice([-1,1])
+        speed=3.5
+        ball_speed=4
 def opponent_ai():
     global direction
     if ball_rect.y>surface1_rect.y:
@@ -62,11 +74,11 @@ def opponent_ai():
         direction=-1
 def score():
     global text,font,score1,text2,score2,font2
-    if ball_rect.x==0:
+    if ball_rect.x<=0:
         score1+=1
         font=pygame.font.SysFont('Arial',40)
         text=font.render(f'{score1}',True,(255,255,255))
-    elif ball_rect.x==800:
+    elif ball_rect.x>=800:
         score2+=1
         font2=pygame.font.SysFont('Arial',40)
         text2=font2.render(f'{score2}',True,(255,255,255))
@@ -104,8 +116,8 @@ surface1.fill((255,255,255))
 surface1_rect=surface1.get_rect(topleft=(0,0))
 surface2=pygame.Surface((10,100))
 surface2.fill((255,255,255))
-surface2_rect=surface2.get_rect(toprigsht=(800,0))
-background=pygame.image.load('my-games\\images_game\\snake game background.jpg')
+surface2_rect=surface2.get_rect(topright=(800,250))
+background=pygame.image.load('images_game\\snake game background.jpg')
 ball=pygame.Surface((25,25))
 ball_rect=ball.get_rect(center=(400,300))
 ball.fill((255,255,255))

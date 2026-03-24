@@ -17,7 +17,7 @@ cell_size=20
 cell_no=30
 screen=pygame.display.set_mode((cell_size*cell_no,cell_size*cell_no))
 pygame.display.set_caption("Snake Game")
-background=pygame.image.load("my-games\\images_game\\snake game background.jpg")
+background=pygame.image.load("images_game\\snake game background.jpg")
 snake_colour=(0,255,0)
 snake_surf=pygame.Surface((cell_size,cell_size))
 snake_colour_fill=snake_surf.fill(snake_colour)
@@ -93,10 +93,10 @@ while running:
                     snake_pos.pop()    
         screen.blit(background,(0,0))
         screen.blit(food,food_rect)
-        screen.blit(text1,(287,10))
         for segment in snake_pos:
             segment_rect = pygame.Rect(segment[0] * cell_size, segment[1] * cell_size, cell_size, cell_size)
             screen.blit(snake_surf,segment_rect)      
+        screen.blit(text1,(287,10))
         game_overscreen()
         pygame.display.update()
         clock.tick(60)

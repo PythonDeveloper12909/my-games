@@ -4,12 +4,20 @@ import random
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image=pygame.image.load("my-games\\images_game\\space invader player ship.xcf")
+        self.image=pygame.image.load("images_game\\space invader player ship.xcf")
         self.rect=self.image.get_rect(midbottom=(400,555))
         self.bullet=pygame.Surface((10, 30))
         self.bullet.fill((255, 255, 255))  
         self.bullet_rect=self.bullet.get_rect(midbottom=(400,555))
         self.bullet_rect.midbottom=self.rect.midtop
+        self.bullet2=pygame.Surface((10,30))
+        self.bullet2.fill((255,255,255))
+        self.bullet_rect2=self.bullet2.get_rect(bottomleft=(450,555))
+        self.bullet_rect2.bottomleft=self.rect.topleft
+        self.bullet3=pygame.Surface((10,30))
+        self.bullet3.fill((255,255,255))
+        self.bullet_rect3=self.bullet2.get_rect(bottomright=(350,555))
+        self.bullet_rect3.bottomright=self.rect.topright
         self.width1=100
         self.width2=100
         self.health_indicator1=pygame.Surface((self.width1,15))
@@ -25,18 +33,27 @@ class Player(pygame.sprite.Sprite):
         keys=pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             self.rect.x -= 4
-        elif keys[pygame.K_RIGHT]:
+        if keys[pygame.K_RIGHT]:
             self.rect.x += 4
-        elif keys[pygame.K_UP]:
+        if keys[pygame.K_UP]:
             self.rect.y -= 4
-        elif keys[pygame.K_DOWN]:
+        if keys[pygame.K_DOWN]:
             self.rect.y += 4
     def blit(self,surface):
         surface.blit(self.bullet, self.bullet_rect)
+        if(spawn_rate<=800):
+            surface.blit(self.bullet2, self.bullet_rect2)
+            surface.blit(self.bullet3, self.bullet_rect3)
     def shoot(self):
         self.bullet_rect.y-=8
+        if(spawn_rate<=800):
+            self.bullet_rect2.y-=8
+            self.bullet_rect3.y-=8
         if self.bullet_rect.y < 0:
-            self.bullet_rect.midbottom=self.rect.midtop   
+            self.bullet_rect.midbottom=self.rect.midtop 
+            if(spawn_rate<=800):
+                self.bullet_rect2.bottomleft=self.rect.topleft
+                self.bullet_rect3.bottomright=self.rect.topright
     def blit_health_indicator(self, surface):
         surface.blit(self.health_indicator2, self.health_indicator2_rect)
         surface.blit(self.health_indicator1, self.health_indicator1_rect)
@@ -53,28 +70,28 @@ class Player(pygame.sprite.Sprite):
     def player_y_x_limit(self):
         if self.rect.y<=200:
             self.rect.y=200
-        elif self.rect.y>=490:
+        if self.rect.y>=490:
             self.rect.y=490
-        elif self.rect.x>=705:
+        if self.rect.x>=705:
             self.rect.x=705
-        elif self.rect.x<=10:
+        if self.rect.x<=10:
             self.rect.x=10
     def update(self):
         self.move()
+        self.player_y_x_limit()
         self.blit(screen)
         self.shoot()   
         self.blit_health_indicator(screen)
         self.health_indicator()
         self.game_over()
-        self.player_y_x_limit()
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image=pygame.image.load("my-games\\images_game\\space invader blue enemy.xcf")
+        self.image=pygame.image.load("images_game\\space invader blue enemy.xcf")
         self.rect=self.image.get_rect(midbottom=(450,-5))
-        self.image2=pygame.image.load("my-games\\images_game\\space invader enemy yellow.xcf")
+        self.image2=pygame.image.load("images_game\\space invader enemy yellow.xcf")
         self.rect2=self.image2.get_rect(midbottom=(350,-5))
-        self.image3=pygame.image.load("my-games\\images_game\\space invader enemy pink.xcf")
+        self.image3=pygame.image.load("images_game\\space invader enemy pink.xcf")
         self.rect3=self.image3.get_rect(midbottom=(250,-5))
         self.game_over_font = pygame.font.SysFont("Arial", 100)
         self.game_over_text = self.game_over_font.render("Game Over", True, (255, 255,255))
@@ -100,36 +117,45 @@ class Enemy(pygame.sprite.Sprite):
         if self.rect2.x > 725 or self.rect2.x < 50:
             self.kill()
         if self.rect3.x > 725 or self.rect3.x < 50:
-            self.kill()   
+            self.kill()
     def shoot_enemy(self, player):
         global score,score_rect,score_text,score_font,spawn_rate
-        if player.bullet_rect.colliderect(self.rect): 
+        if player.bullet_rect.colliderect(self.rect) or player.bullet_rect2.colliderect(self.rect) or player.bullet_rect3.colliderect(self.rect): 
             player.bullet_rect.midbottom = player.rect.midtop
-            self.rect.y=800          
+            player.bullet_rect2.bottomleft=player.rect.topleft
+            player.bullet_rect3.bottomright=player.rect.topright
+            self.rect.y=800      
             score+=20
             score_text=score_font.render(f"Score:{score}",True,(255,255,255))
             score_rect=score_text.get_rect(topleft=(4,75))
-            spawn_rate-=20
+            spawn_rate-=50
+            spawn_rate = max(spawn_rate, 200)
             pygame.time.set_timer(Userevent, spawn_rate)  
-        elif player.bullet_rect.colliderect(self.rect2):
+        elif player.bullet_rect.colliderect(self.rect2) or player.bullet_rect2.colliderect(self.rect2) or player.bullet_rect3.colliderect(self.rect2):
             player.bullet_rect.midbottom = player.rect.midtop
+            player.bullet_rect2.bottomleft=player.rect.topleft
+            player.bullet_rect3.bottomright=player.rect.topright
             self.rect2.y=800
             score+=20
             score_text=score_font.render(f"Score:{score}",True,(255,255,255))
             score_rect=score_text.get_rect(topleft=(4,75))
-            spawn_rate-=20
+            spawn_rate-=50
+            spawn_rate = max(spawn_rate, 200)
             pygame.time.set_timer(Userevent, spawn_rate)  
-        elif player.bullet_rect.colliderect(self.rect3):
+        elif player.bullet_rect.colliderect(self.rect3) or player.bullet_rect2.colliderect(self.rect3) or player.bullet_rect3.colliderect(self.rect3):
             player.bullet_rect.midbottom = player.rect.midtop
+            player.bullet_rect2.bottomleft=player.rect.topleft
+            player.bullet_rect3.bottomright=player.rect.topright
             self.rect3.y=800
             score+=20
             score_text=score_font.render(f"Score:{score}",True,(255,255,255))
             score_rect=score_text.get_rect(topleft=(4,75))
-            spawn_rate-=20
+            spawn_rate-=50
+            spawn_rate = max(spawn_rate, 200)
             pygame.time.set_timer(Userevent, spawn_rate)  
     def health_indicator_low(self,player):
         if player.rect.colliderect(self.rect):
-            player.width1-=0.3   
+            player.width1-=0.3
             player.health_indicator1 = pygame.Surface((player.width1, 15))
             player.health_indicator1.fill((0, 255, 0))
         if player.rect.colliderect(self.rect2):
@@ -154,8 +180,8 @@ class Enemy(pygame.sprite.Sprite):
             exit()
     def game_won(self):
         global spawn_rate
-        if spawn_rate==1400:
-            spawn_rate=1400
+        if spawn_rate<=500:
+            spawn_rate=500
     def update(self):
         self.move()
         self.blit(screen)
@@ -182,12 +208,12 @@ enemy=Enemy()
 enemy_group=pygame.sprite.Group(enemy)
 screen=pygame.display.set_mode((800,600))
 pygame.display.set_caption("Space Invaders Game")
-background=pygame.image.load("my-games\\images_game\\space invaders background.jpg").convert_alpha()
-player=pygame.image.load("my-games\\images_game\\space invader player ship.xcf").convert_alpha()
+background=pygame.image.load("images_game\\space invaders background.jpg").convert_alpha()
+player=pygame.image.load("images_game\\space invader player ship.xcf").convert_alpha()
 player_rect=player.get_rect(midbottom=(400,555))
-enemy_blue=pygame.image.load("my-games\\images_game\\space invader blue enemy.xcf").convert_alpha()
-enemy_pink=pygame.image.load("my-games\\images_game\\space invader enemy pink.xcf").convert_alpha()
-enemy_yellow=pygame.image.load("my-games\\images_game\\space invader enemy yellow.xcf").convert_alpha()
+enemy_blue=pygame.image.load("images_game\\space invader blue enemy.xcf").convert_alpha()
+enemy_pink=pygame.image.load("images_game\\space invader enemy pink.xcf").convert_alpha()
+enemy_yellow=pygame.image.load("images_game\\space invader enemy yellow.xcf").convert_alpha()
 bullet=pygame.Surface((10, 20))
 bullet.fill((255, 0, 0))
 bullet_rect=bullet.get_rect(midbottom=(400,555))
