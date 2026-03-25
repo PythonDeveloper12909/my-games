@@ -2,6 +2,7 @@ import pygame
 from sys import exit
 import random
 import time
+import asyncio
 def surface_groundorfloor_touch():
     if surface1_rect.y<=0:
         surface1_rect.y=0
@@ -149,62 +150,67 @@ direction=1
 speed=3.5
 game_reset1=True
 game_reset2=True
-while True:
-    for event in pygame.event.get():
-        if event.type==pygame.QUIT:
-            pygame.quit()
-            exit()
-        if event.type==pygame.KEYDOWN:
-            if event.key==pygame.K_DOWN:
-                surface2_rect.y += 30
-        if event.type==pygame.KEYDOWN:
-            if event.key==pygame.K_UP:
-                surface2_rect.y-=30
-        if event.type==pygame.KEYDOWN and game_reset2==False:
-            if event.key==pygame.K_SPACE:
-                game_reset2=True
-                ball_rect.x=400
-                ball_rect.y=300
-                score1=0
-                font=pygame.font.SysFont('Arial',40)
-                text=font.render(f'{score1}',True,(255,255,255))
-                text_rect=text.get_rect(center=(600,35))
-                score2=0
-                font2=pygame.font.SysFont('Arial',40)
-                text2=font2.render(f'{score2}',True,(255,255,255))
-                text_rect2=text2.get_rect(center=(200,35))
-                surface2_rect.y=0
-        if event.type==pygame.KEYDOWN and game_reset1==False:
-            if event.key==pygame.K_SPACE:
-                game_reset1=True
-                ball_rect.x=400
-                ball_rect.y=300
-                score1=0
-                font=pygame.font.SysFont('Arial',40)
-                text=font.render(f'{score1}',True,(255,255,255))
-                text_rect=text.get_rect(center=(600,35))
-                score2=0
-                font2=pygame.font.SysFont('Arial',40)
-                text2=font2.render(f'{score2}',True,(255,255,255))
-                text_rect2=text2.get_rect(center=(200,35))
-                surface2_rect.y=0
-    screen.blit(background,(0,0))
-    pygame.draw.line(screen,(255,255,255),(400,0),(400,600),5)
-    screen.blit(surface1,surface1_rect)
-    screen.blit(surface2,surface2_rect)
-    screen.blit(ball,ball_rect)
-    screen.blit(text,text_rect)
-    screen.blit(text2,text_rect2)
-    ball_rect.x+=ball_speed*ball_direction_x
-    ball_rect.y+=ball_speed*ball_direction_y
-    surface1_rect.y+=speed*direction
-    surface_groundorfloor_touch()
-    ball_groundorfloor_touch()
-    ball_surface_touch()
-    opponent_ai()
-    score()
-    ball_reset()
-    game_over_screen()
-    game_over_screen2()
-    pygame.display.update()
-    clock.tick(60)
+def run():
+    global text,text_rect,text2,text_rect2
+    while True:
+            for event in pygame.event.get():
+                if event.type==pygame.QUIT:
+                    pygame.quit()
+                    exit()
+                if event.type==pygame.KEYDOWN:
+                    if event.key==pygame.K_DOWN:
+                        surface2_rect.y += 30
+                if event.type==pygame.KEYDOWN:
+                    if event.key==pygame.K_UP:
+                        surface2_rect.y-=30
+                if event.type==pygame.KEYDOWN and game_reset2==False:
+                    if event.key==pygame.K_SPACE:
+                        game_reset2=True
+                        ball_rect.x=400
+                        ball_rect.y=300
+                        score1=0
+                        font=pygame.font.SysFont('Arial',40)
+                        text=font.render(f'{score1}',True,(255,255,255))
+                        text_rect=text.get_rect(center=(600,35))
+                        score2=0
+                        font2=pygame.font.SysFont('Arial',40)
+                        text2=font2.render(f'{score2}',True,(255,255,255))
+                        text_rect2=text2.get_rect(center=(200,35))
+                        surface2_rect.y=0
+                if event.type==pygame.KEYDOWN and game_reset1==False:
+                    if event.key==pygame.K_SPACE:
+                        game_reset1=True
+                        ball_rect.x=400
+                        ball_rect.y=300
+                        score1=0
+                        font=pygame.font.SysFont('Arial',40)
+                        text=font.render(f'{score1}',True,(255,255,255))
+                        text_rect=text.get_rect(center=(600,35))
+                        score2=0
+                        font2=pygame.font.SysFont('Arial',40)
+                        text2=font2.render(f'{score2}',True,(255,255,255))
+                        text_rect2=text2.get_rect(center=(200,35))
+                        surface2_rect.y=0
+            screen.blit(background,(0,0))
+            pygame.draw.line(screen,(255,255,255),(400,0),(400,600),5)
+            screen.blit(surface1,surface1_rect)
+            screen.blit(surface2,surface2_rect)
+            screen.blit(ball,ball_rect)
+            screen.blit(text,text_rect)
+            screen.blit(text2,text_rect2)
+            ball_rect.x+=ball_speed*ball_direction_x
+            ball_rect.y+=ball_speed*ball_direction_y
+            surface1_rect.y+=speed*direction
+            surface_groundorfloor_touch()
+            ball_groundorfloor_touch()
+            ball_surface_touch()
+            opponent_ai()
+            score()
+            ball_reset()
+            game_over_screen()
+            game_over_screen2()
+            pygame.display.update()
+            clock.tick(60)
+            asyncio.sleep(0)
+
+asyncio.run(run())
